@@ -6,14 +6,14 @@ tree [![Build status][travis-image]][travis-url] [![License][license-image]][lic
 
 #### Installation:
 ```sh
-$ go get github.com/a8m/tree/cmd/tree
+$ go get github.com/eyotang/tree/cmd/tree
 ```
 
 #### How to use `tree` programmatically ?
 You can take a look on [`cmd/tree`](https://github.com/a8m/tree/blob/master/cmd/tree/tree.go), and [s3tree](http://github.com/a8m/s3tree) or see the example below.
 ```go
 import (
-    "github.com/a8m/tree"
+    "github.com/eyotang/tree"
 )
 
 func main() {

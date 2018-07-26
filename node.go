@@ -1,7 +1,7 @@
 package tree
 
 import (
-	"errors"
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -11,6 +11,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // Node represent some node in the tree
@@ -22,6 +24,13 @@ type Node struct {
 	err    error
 	nodes  Nodes
 	vpaths map[string]bool
+}
+
+// Contributor structure
+type Contributor struct {
+	Owner    []string
+	Author   []string
+	Reviewer []string
 }
 
 // List of nodes
@@ -60,6 +69,7 @@ type Options struct {
 	Quotes   bool
 	Inodes   bool
 	Device   bool
+	Contrib  bool
 	// Sort
 	NoSort    bool
 	VerSort   bool
@@ -294,11 +304,23 @@ func (node *Node) print(indent string, opts *Options) {
 		}
 	}
 	// name/path
-	var name string
+	var (
+		name    string
+		contrib Contributor
+		err     error
+	)
 	if node.depth == 0 || opts.FullPath {
 		name = node.path
 	} else {
 		name = node.Name()
+		if !node.IsDir() && opts.Contrib {
+			if contrib, err = node.parseContrib(); err != nil {
+				return
+			}
+			name = "Author: " + strings.Join(contrib.Owner, ",")
+		} else {
+			name = node.Name()
+		}
 	}
 	// Quotes
 	if opts.Quotes {
@@ -399,5 +421,60 @@ func formatBytes(i int64) (result string) {
 	}
 	result = fmt.Sprintf(sFmt+eFmt, n)
 	result = strings.Trim(result, " ")
+	return
+}
+
+func (node *Node) parseContrib() (c Contributor, err error) {
+	var (
+		file *os.File
+	)
+	if file, err = os.Open(node.path); err != nil {
+		err = errors.Wrapf(err, "ioutil.ReadFile(%s) err(%+v)", node.path)
+		return
+	}
+	var (
+		line       []byte
+		isPrefix   bool
+		curSection string
+		reader     *bufio.Reader
+	)
+	reader = bufio.NewReader(file)
+	for {
+		if line, isPrefix, err = reader.ReadLine(); err != nil {
+			if err == io.EOF {
+				err = nil
+				break
+			}
+			return
+		}
+		if isPrefix {
+			err = errors.Wrapf(err, "bufio.NewReader(%s) readline prefix read,line too long", file)
+			return
+		}
+		lineStr := strings.TrimSpace(string(line))
+		if lineStr == "" {
+			continue
+		}
+		if strings.Contains(strings.ToLower(lineStr), "owner") {
+			curSection = "owner"
+			continue
+		}
+		if strings.Contains(strings.ToLower(lineStr), "author") {
+			curSection = "author"
+			continue
+		}
+		if strings.Contains(strings.ToLower(lineStr), "reviewer") {
+			curSection = "reviewer"
+			continue
+		}
+		switch curSection {
+		case "owner":
+			c.Owner = append(c.Owner, lineStr)
+		case "author":
+			c.Author = append(c.Author, lineStr)
+		case "reviewer":
+			c.Reviewer = append(c.Reviewer, lineStr)
+		}
+	}
 	return
 }

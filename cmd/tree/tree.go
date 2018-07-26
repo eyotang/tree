@@ -23,15 +23,16 @@ var (
 	prune      = flag.Bool("prune", false, "")
 	o          = flag.String("o", "", "")
 	// Files
-	s      = flag.Bool("s", false, "")
-	h      = flag.Bool("h", false, "")
-	p      = flag.Bool("p", false, "")
-	u      = flag.Bool("u", false, "")
-	g      = flag.Bool("g", false, "")
-	Q      = flag.Bool("Q", false, "")
-	D      = flag.Bool("D", false, "")
-	inodes = flag.Bool("inodes", false, "")
-	device = flag.Bool("device", false, "")
+	s       = flag.Bool("s", false, "")
+	h       = flag.Bool("h", false, "")
+	p       = flag.Bool("p", false, "")
+	u       = flag.Bool("u", false, "")
+	g       = flag.Bool("g", false, "")
+	Q       = flag.Bool("Q", false, "")
+	D       = flag.Bool("D", false, "")
+	inodes  = flag.Bool("inodes", false, "")
+	device  = flag.Bool("device", false, "")
+	contrib = flag.Bool("contrib", false, "")
 	// Sort
 	U         = flag.Bool("U", false, "")
 	v         = flag.Bool("v", false, "")
@@ -70,6 +71,7 @@ Options:
     -D		    Print the date of last modification or (-c) status change.
     --inodes	    Print inode number of each file.
     --device	    Print device ID number to which each file belongs.
+    --contrib       Print content contributors.md.
     ------- Sorting options -------
     -v		    Sort files alphanumerically by version.
     -t		    Sort files by last modification time.
@@ -155,6 +157,7 @@ func main() {
 		Quotes:   *Q,
 		Inodes:   *inodes,
 		Device:   *device,
+		Contrib:  *contrib,
 		// Sort
 		NoSort:    *U,
 		ReverSort: *r,
