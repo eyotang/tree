@@ -20,6 +20,7 @@ var (
 	L          = flag.Int("L", 3, "")
 	P          = flag.String("P", "", "")
 	I          = flag.String("I", "", "")
+	prune      = flag.Bool("prune", false, "")
 	o          = flag.String("o", "", "")
 	// Files
 	s      = flag.Bool("s", false, "")
@@ -55,6 +56,7 @@ Options:
     -L		    Descend only level directories deep.
     -P		    List only those files that match the pattern given.
     -I		    Do not list files that match the given pattern.
+    --prune     Makes tree prune empty directories from the output, useful when used in conjunction with -P or -I.
     --ignore-case   Ignore case when pattern matching.
     --noreport	    Turn off file/directory count at end of tree listing.
     -o filename	    Output to file instead of stdout.
@@ -141,6 +143,7 @@ func main() {
 		FollowLink: *l,
 		Pattern:    *P,
 		IPattern:   *I,
+		Prune:      *prune,
 		IgnoreCase: *ignorecase,
 		// Files
 		ByteSize: *s,

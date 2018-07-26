@@ -49,6 +49,7 @@ type Options struct {
 	DeepLevel  int
 	Pattern    string
 	IPattern   string
+	Prune      bool
 	// File
 	ByteSize bool
 	UnitSize bool
@@ -120,6 +121,9 @@ func (node *Node) Visit(opts *Options) (dirs, files int) {
 			vpaths: node.vpaths,
 		}
 		d, f := nnode.Visit(opts)
+		if opts.Prune && f == 0 {
+			continue
+		}
 		if nnode.err == nil && !nnode.IsDir() {
 			// "dirs only" option
 			if opts.DirsOnly {
