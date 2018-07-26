@@ -15,6 +15,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const INT_MAX = int(^uint(0) >> 1)
+
 // Node represent some node in the tree
 // contains FileInfo, and its childs
 type Node struct {

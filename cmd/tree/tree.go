@@ -17,7 +17,7 @@ var (
 	ignorecase = flag.Bool("ignore-case", false, "")
 	noreport   = flag.Bool("noreport", false, "")
 	l          = flag.Bool("l", false, "")
-	L          = flag.Int("L", 3, "")
+	L          = flag.Int("L", tree.INT_MAX, "")
 	P          = flag.String("P", "", "")
 	I          = flag.String("I", "", "")
 	prune      = flag.Bool("prune", false, "")
