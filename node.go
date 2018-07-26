@@ -131,7 +131,7 @@ func (node *Node) Visit(opts *Options) (dirs, files int) {
 			vpaths: node.vpaths,
 		}
 		d, f := nnode.Visit(opts)
-		if opts.Prune && f == 0 && d == 0 {
+		if opts.Prune && f == 0 {
 			continue
 		}
 		if nnode.err == nil && !nnode.IsDir() {
