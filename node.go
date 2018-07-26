@@ -319,7 +319,7 @@ func (node *Node) print(indent string, opts *Options) {
 			if contrib, err = node.parseContrib(); err != nil {
 				return
 			}
-			name = "Author: " + strings.Join(contrib.Owner, ",")
+			name = "Owner: " + strings.Join(contrib.Owner, ",")
 		} else {
 			name = node.Name()
 		}
