@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/a8m/tree"
+	"github.com/eyotang/tree"
 )
 
 var (
