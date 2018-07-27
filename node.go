@@ -93,6 +93,7 @@ func New(path string) *Node {
 
 // Visit all files under the given node.
 func (node *Node) Visit(opts *Options) (dirs, files int) {
+	node.mergeOpts(opts)
 	// visited paths
 	if path, err := filepath.Abs(node.path); err == nil {
 		path = filepath.Clean(path)
@@ -194,6 +195,14 @@ func (node *Node) sort(opts *Options) {
 		} else {
 			sort.Sort(ByFunc{node.nodes, fn})
 		}
+	}
+}
+
+func (node *Node) mergeOpts(opts *Options) {
+	if opts.Contrib {
+		opts.Prune = true
+		opts.Pattern = "CONTRIBUTORS.md"
+		opts.IgnoreCase = true
 	}
 }
 

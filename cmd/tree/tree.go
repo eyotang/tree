@@ -71,7 +71,7 @@ Options:
     -D		    Print the date of last modification or (-c) status change.
     --inodes	    Print inode number of each file.
     --device	    Print device ID number to which each file belongs.
-    --contrib       Print content contributors.md.
+    --contrib       Print content contributors.md, it will set -P CONTRIBUTORS.md --prune --ignore-case.
     ------- Sorting options -------
     -v		    Sort files alphanumerically by version.
     -t		    Sort files by last modification time.
